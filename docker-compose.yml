@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend-eco-deli
+    container_name: backend
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+    depends_on:
+      - mariadb
+    networks:
+      - app-network
+
+  frontend:
+    build: ./frontend-eco-deli
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  mariadb:
+    image: mariadb:11
+    container_name: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
+volumes:
+  db_data:
+
+networks:
+  app-network:

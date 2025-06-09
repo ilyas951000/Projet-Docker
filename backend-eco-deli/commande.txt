@@ -1,0 +1,1 @@
+lancer cette commande pour stripe, tant que l'on ai en local : stripe listen --forward-to localhost:3001/payments/webhook
